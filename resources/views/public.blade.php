@@ -15,7 +15,7 @@
                             <div class="card-body">
                                 <h5 class="card-title">{{ $post->titulo }}</h5>
                                 <p class="card-text">{{ $post->descricao }}</p>
-                                <a href="{{ route('posts.show', $post->id) }}" class="btn btn-primary">Abrir postagem</a>
+                                <a href="{{ route('posts.show', $post->id) }}" class="btn btn-primary col-12">Abrir postagem</a>
                             </div>
                         </div>
                     @endforeach

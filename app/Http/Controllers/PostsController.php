@@ -14,7 +14,7 @@ class PostsController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth')->except(['show']); //ajustar
+        $this->middleware('auth')->except(['show']);
     }
 
     /**
@@ -29,11 +29,11 @@ class PostsController extends Controller
 
     public function store(Request $request)
     {
-        // dd("no store");
-        // $data = $request->only('titulo', 'descricao', 'imagem');
-        // ModelPostagem::create($data);
-        // return redirect()->route('home');
-
+        $request->validate([
+            'titulo' => 'required|max:120',
+            'descricao' => 'required',
+            'imagem' => 'required|image',
+        ]);
 
         $post = new ModelPostagem();
         $post->titulo = $request->titulo;
@@ -44,9 +44,6 @@ class PostsController extends Controller
         $post->save();
 
         return redirect()->route('home');
-
-        // $arr = array('msg' => 'Post salvo com sucesso!', 'status' => true);
-        // return response()->json($arr);
     }
 
     public function publish($id)
@@ -93,8 +90,7 @@ class PostsController extends Controller
 
     public function destroy($id)
     {
-        $post = ModelPostagem::find($id);
-        $post->delete();
+        ModelPostagem::destroy($id);
 
         return redirect()->route('home');
     }

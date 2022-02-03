@@ -25,10 +25,11 @@
                         <br>
                         <textarea name="descricao" placeholder="Descrição" cols="40" rows="8">{{ $post->descricao }}</textarea>
                         <br>
-
-                        <button type="submit" id="send_form" class="btn btn-block btn-success">Salvar</button>
-                        <a href="{{ route('home') }}" class="btn btn-block btn-secondary">Cancelar</a>
                         <br>
+
+                        <hr>
+                        <button type="submit" id="send_form" class="btn btn-block btn-success col-6">Salvar</button>
+                        <a href="{{ route('home') }}" class="btn btn-block btn-secondary col-6">Cancelar</a>
                     </form>
                 </div>
             </div>

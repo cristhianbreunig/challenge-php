@@ -15,22 +15,33 @@
                 </div>
 
                 @auth
-                    <a href="{{ route('home') }}" class="btn btn-primary">Voltar</a>
+                    <hr>
+                    <div style="display: flex; flex-direction: row; flex-wrap: wrap; flex-flow: inherit; gap: 5px; margin-left: 5px;">
+                        <a href="{{ route('home') }}" class="btn btn-secondary col-3">Voltar</a>
 
-                    <a href="{{ route('posts.edit', $post->id) }}" class="btn btn-primary">Editar</a>
+                        <a href="{{ route('posts.edit', $post->id) }}" class="btn btn-primary col-3">Editar</a>
 
-                    @if ($post->ativa == 'N')
-                        <a href="{{ route('posts.publish', $post->id) }}" class="btn btn-primary">Publicar</a>
-                    @endif
+                        @if ($post->ativa == 'N')
+                            <a href="{{ route('posts.publish', $post->id) }}" class="btn btn-primary col-3">Publicar</a>
+                        @endif
 
-                    {{-- <a href="{{ route('posts.delete', $post->id) }}" class="btn btn-danger">Excluir</a> --}}
+                        <form action="{{ route('posts.destroy', $post->id) }}" method="POST">
+                            @csrf
+                            {{ method_field('DELETE') }}
+                            <button type="submit" class="btn btn-danger col-3">Excluir</button>
+                        </form>
 
-                    <form action="{{ route('posts.destroy', $post->id) }}"></form>
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-danger">Excluir</button>
-                    </form>
+                        <br>
+                    </div>
                 @endauth
+
+                @guest
+                    <hr>
+                    <div style="display: flex; flex-direction: row; flex-wrap: wrap; flex-flow: inherit; gap: 5px; margin-left: 5px;">
+                        <a href="{{ url()->previous() }}" class="btn btn-secondary col-3">Voltar</a>
+                        <br>
+                    </div>
+                @endguest
 
             </div>
         </div>

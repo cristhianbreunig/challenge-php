@@ -4,12 +4,10 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">Postagens</div>
+            <div class="card" style="align-items: center;">
+                <div class="card-header" style="width: 100%; display: flex; justify-content: center;">Postagens - Admin</div>
 
-                <button type="button" class="btn btn-labeled btn-success col-2 m-2" onclick="window.location='{{ URL::to('posts/novo') }}'">
-                    + Nova
-                </button>
+                <button type="button" class="btn btn-labeled btn-success col-5 m-2" onclick="window.location='{{ URL::to('posts/novo') }}'">+ Nova Postagem</button>
 
                 <div class="card-body">
                     @foreach ($postagens as $post)
@@ -19,7 +17,7 @@
                             <div class="card-body">
                                 <h5 class="card-title">{{ $post->titulo }}</h5>
                                 <p class="card-text">{{ $post->descricao }}</p>
-                                <a href="{{ route('posts.show', $post->id) }}" class="btn btn-primary">Abrir postagem</a>
+                                <a href="{{ route('posts.show', $post->id) }}" class="btn btn-primary col-12">Abrir postagem</a>
                             </div>
                         </div>
                     @endforeach
