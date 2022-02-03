@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Postagem as ModelPostagem;
 
 class PublicController extends Controller
 {
@@ -13,7 +14,7 @@ class PublicController extends Controller
      */
     public function __construct()
     {
-        
+
     }
 
     /**
@@ -23,7 +24,9 @@ class PublicController extends Controller
      */
     public function index()
     {
-        return view('public');
+        $array['postagens'] = ModelPostagem::where('ativa', '=', 'S')->paginate(10);
+
+        return view('public', $array);
     }
 
     public function postagem()

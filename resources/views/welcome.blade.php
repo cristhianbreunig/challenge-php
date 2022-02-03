@@ -88,15 +88,11 @@
                             <button type="button" class="btn btn-labeled btn-success col-2 m-2">
                                 + Nova
                             </button>
-
-                            <div class="card-body">
-                                <b>|| Adicione aqui uma listagem de postagens, com botão de publicar e remover ||</b>
-                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-            
+
         </div>
     </body>
 </html>
