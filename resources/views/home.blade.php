@@ -10,7 +10,7 @@
                 <button type="button" class="btn btn-labeled btn-success col-5 m-2" onclick="window.location='{{ URL::to('posts/novo') }}'">+ Nova Postagem</button>
 
                 <div class="card-body">
-                    @foreach ($postagens as $post)
+                    @forelse ($postagens as $post)
                         <br>
                         <div class="card" style="width: 18rem;">
                             <img src="/storage/{{ $post->imagem }}" class="card-img-top" alt="...">
@@ -20,7 +20,11 @@
                                 <a href="{{ route('posts.show', $post->id) }}" class="btn btn-primary col-12">Abrir postagem</a>
                             </div>
                         </div>
-                    @endforeach
+                    @empty
+                        <div style="width: 19rem; font-size: larger;">
+                            <b>Ops, nenhuma postagem encontrada...</b>
+                        </div>
+                    @endforelse
                 </div>
 
                 {!! $postagens->links() !!}

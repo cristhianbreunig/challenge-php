@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+// use App\Http\Requests\StorePostRequest;
 use Illuminate\Http\Request;
 use App\Postagem as ModelPostagem;
+use Illuminate\Support\Facades\Storage;
 
 class PostsController extends Controller
 {
@@ -27,23 +29,48 @@ class PostsController extends Controller
         return view('novo');
     }
 
+    // public function store(StorePostRequest $request)
     public function store(Request $request)
     {
-        $request->validate([
+
+        $validacao = \Validator::make($request->all(),[
             'titulo' => 'required|max:120',
-            'descricao' => 'required',
+            'descricao' => 'required|min:20',
             'imagem' => 'required|image',
+        ],[
+            'titulo.required' => 'Ops, é necessário informar o título!',
+            'descricao.required' => 'Ops, é necessário informar a descrição!',
+            'descricao.min' => 'Ops, é necessário informar pelo menos 20 caracteres na descrição!',
+            'imagem.required' => 'Ops, é necessário enviar uma imagem!',
+            'imagem.image' => 'Ops, somente imagens são aceitas!',
         ]);
 
-        $post = new ModelPostagem();
-        $post->titulo = $request->titulo;
-        $post->descricao = $request->descricao;
+        if (!$validacao->passes()){
+            return response()->json([
+                'code' => 0,
+                'error' => $validacao->errors()->toArray(),
+            ]);
 
-        $imagem = $request->imagem->store('');
-        $post->imagem = $imagem;
-        $post->save();
+        } else {
 
-        return redirect()->route('home');
+            $post = new ModelPostagem();
+            $post->titulo = $request->titulo;
+            $post->descricao = $request->descricao;
+
+            $imagem = $request->file('imagem');
+            $nome_imagem = time() . "_" . $imagem->getClientOriginalName();
+
+            $request->imagem->storeAs('',$nome_imagem);
+
+            $post->imagem = $nome_imagem;
+            $post->save();
+
+            return response()->json([
+                'code' => 1,
+                'msg' => 'Post salvo com sucesso!',
+                'url' => route('home'),
+            ], 200);
+        }
     }
 
     public function publish($id)
@@ -90,7 +117,14 @@ class PostsController extends Controller
 
     public function destroy($id)
     {
-        ModelPostagem::destroy($id);
+        $post = ModelPostagem::find($id);
+        $imagem = $post->imagem;
+
+        if (!ModelPostagem::destroy($id)){
+            return redirect()->back();
+        }
+
+        Storage::delete($imagem);
 
         return redirect()->route('home');
     }
