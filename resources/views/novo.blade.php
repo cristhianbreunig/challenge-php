@@ -76,7 +76,7 @@
                         });
                     } else {
                         $(form)[0].reset();
-                        alert('Post salvo com sucesso!');
+                        alert(response.msg);
                         window.location = response.url;
                     }
                 }

@@ -110,9 +110,31 @@ class PostsController extends Controller
             return redirect()->back();
         }
 
-        $post->update($request->all());
+        $validacao = \Validator::make($request->all(),[
+            'titulo' => 'required|max:120',
+            'descricao' => 'required|min:20'
+        ],[
+            'titulo.required' => 'Ops, é necessário informar o título!',
+            'descricao.required' => 'Ops, é necessário informar a descrição!',
+            'descricao.min' => 'Ops, é necessário informar pelo menos 20 caracteres na descrição!',
+        ]);
 
-        return redirect()->route('home');
+        if (!$validacao->passes()){
+            return response()->json([
+                'code' => 0,
+                'error' => $validacao->errors()->toArray(),
+            ]);
+
+        } else {
+
+            $post->update($request->all());
+
+            return response()->json([
+                'code' => 1,
+                'msg' => 'Post atualizado com sucesso!',
+                'url' => route('home'),
+            ], 200);
+        }
     }
 
     public function destroy($id)
